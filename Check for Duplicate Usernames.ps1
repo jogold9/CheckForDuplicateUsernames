@@ -19,14 +19,16 @@ ForEach ($User in $Users) {
     $username = $User.SamAccountName
 
     # check if username already exists
-    $result = Get-ADUser -Filter { SamAccountName -eq $username}
+    
+    $result = Get-ADUser -Filter { SamAccountName -eq $username }
 
-    # Optionally write results to the screen
-    #Write-host $result + " is a duplicate"
-
-    # If username exists, write a message to a text file, and set result variable back to false when done
+    # If username exists, write to screen & to a message to a text file, and set result variable back to false when done
     if ($result) {
+        Write-Host $username + " is a duplicate"
         $username + " is a duplicate" | Out-File -FilePath E:\Output\CheckForDuplicateUsernames.txt -Append
         $result = $false
+    }
+    else {
+        Write-Host "Unique username"
     }
 }
